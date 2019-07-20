@@ -137,6 +137,21 @@ services:
       links:
         - docker-in-docker
 
+### Nuxt Dev ##################################
+    nuxt-dev:
+      image: node
+      volumes:
+        - ../:/data
+      environment:
+      - HOST=0.0.0.0
+      - PORT=80
+      working_dir: /data/front-end
+      command: ["npm", "install"]
+      command: ["npm", "run", "dev"]
+      networks:
+        - frontend
+        - backend
+
 ### PHP-FPM ##############################################
     php-fpm:
       build:
@@ -276,6 +291,7 @@ services:
         - "${NGINX_HOST_HTTPS_PORT}:443"
       depends_on:
         - php-fpm
+        - nuxt-dev
       networks:
         - frontend
         - backend
